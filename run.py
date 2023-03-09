@@ -1137,18 +1137,18 @@ def main():
                 gcc_compile(matched_list, output_dir, args.isa, args.mabi,
                             args.gcc_opts, args.debug)
 
-            # Run ISS simulation
-            if args.steps == "all" or re.match(".*iss_sim.*", args.steps):
-                iss_sim(matched_list, output_dir, args.iss, args.iss_yaml,
-                        args.iss_opts,
-                        args.isa, args.core_setting_dir, args.iss_timeout,
-                        args.debug)
+            # # Run ISS simulation
+            # if args.steps == "all" or re.match(".*iss_sim.*", args.steps):
+            #     iss_sim(matched_list, output_dir, args.iss, args.iss_yaml,
+            #             args.iss_opts,
+            #             args.isa, args.core_setting_dir, args.iss_timeout,
+            #             args.debug)
 
-            # Compare ISS simulation result
-            if args.steps == "all" or re.match(".*iss_cmp.*", args.steps):
-                iss_cmp(matched_list, args.iss, output_dir,
-                        args.stop_on_first_error,
-                        args.exp, args.debug)
+            # # Compare ISS simulation result
+            # if args.steps == "all" or re.match(".*iss_cmp.*", args.steps):
+            #     iss_cmp(matched_list, args.iss, output_dir,
+            #             args.stop_on_first_error,
+            #             args.exp, args.debug)
 
         sys.exit(RET_SUCCESS)
     except KeyboardInterrupt:

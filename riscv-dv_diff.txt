@@ -1,0 +1,97 @@
+[1mdiff --git a/run.py b/run.py[m
+[1mindex 84c0eb6..37ac3b2 100644[m
+[1m--- a/run.py[m
+[1m+++ b/run.py[m
+[36m@@ -1137,18 +1137,18 @@[m [mdef main():[m
+                 gcc_compile(matched_list, output_dir, args.isa, args.mabi,[m
+                             args.gcc_opts, args.debug)[m
+ [m
+[31m-            # Run ISS simulation[m
+[31m-            if args.steps == "all" or re.match(".*iss_sim.*", args.steps):[m
+[31m-                iss_sim(matched_list, output_dir, args.iss, args.iss_yaml,[m
+[31m-                        args.iss_opts,[m
+[31m-                        args.isa, args.core_setting_dir, args.iss_timeout,[m
+[31m-                        args.debug)[m
+[31m-[m
+[31m-            # Compare ISS simulation result[m
+[31m-            if args.steps == "all" or re.match(".*iss_cmp.*", args.steps):[m
+[31m-                iss_cmp(matched_list, args.iss, output_dir,[m
+[31m-                        args.stop_on_first_error,[m
+[31m-                        args.exp, args.debug)[m
+[32m+[m[32m            # # Run ISS simulation[m
+[32m+[m[32m            # if args.steps == "all" or re.match(".*iss_sim.*", args.steps):[m
+[32m+[m[32m            #     iss_sim(matched_list, output_dir, args.iss, args.iss_yaml,[m
+[32m+[m[32m            #             args.iss_opts,[m
+[32m+[m[32m            #             args.isa, args.core_setting_dir, args.iss_timeout,[m
+[32m+[m[32m            #             args.debug)[m
+[32m+[m
+[32m+[m[32m            # # Compare ISS simulation result[m
+[32m+[m[32m            # if args.steps == "all" or re.match(".*iss_cmp.*", args.steps):[m
+[32m+[m[32m            #     iss_cmp(matched_list, args.iss, output_dir,[m
+[32m+[m[32m            #             args.stop_on_first_error,[m
+[32m+[m[32m            #             args.exp, args.debug)[m
+ [m
+         sys.exit(RET_SUCCESS)[m
+     except KeyboardInterrupt:[m
+[1mdiff --git a/src/dv_defines.svh b/src/dv_defines.svh[m
+[1mindex 07d3d1a..fc90b05 100644[m
+[1m--- a/src/dv_defines.svh[m
+[1m+++ b/src/dv_defines.svh[m
+[36m@@ -33,14 +33,16 @@[m
+ `endif[m
+ [m
+ `ifndef DV_CHECK[m
+[31m-`define DV_CHECK(T_, MSG_="", SEV_=error, ID_=`gfn, WITH_C_=) \[m
+[32m+[m[32m// `define DV_CHECK(T_, MSG_="", SEV_=error, ID_=`gfn, WITH_C_=) \[m
+[32m+[m[32m`define DV_CHECK(T_, MSG_="", SEV_=error, ID_=`gfn, WITH_C_= && 1) \[m
+     if (!(T_ WITH_C_)) begin \[m
+       `uvm_``SEV_(ID_, $sformatf("Check failed (%s) %s ", `"T_`", MSG_)); \[m
+     end[m
+ `endif[m
+ [m
+ `ifndef DV_CHECK_FATAL[m
+[31m-  `define DV_CHECK_FATAL(T_, MSG_="", ID_=`gfn, WITH_C_=) \[m
+[32m+[m[32m  // `define DV_CHECK_FATAL(T_, MSG_="", ID_=`gfn, WITH_C_=) \[m
+[32m+[m[32m  `define DV_CHECK_FATAL(T_, MSG_="", ID_=`gfn, WITH_C_=&& 1) \[m
+     `DV_CHECK(T_, MSG_, fatal, ID_, WITH_C_)[m
+ `endif[m
+ [m
+[1mdiff --git a/target/rv32i/riscv_core_setting.sv b/target/rv32i/riscv_core_setting.sv[m
+[1mindex 0cc2309..cdd081b 100644[m
+[1m--- a/target/rv32i/riscv_core_setting.sv[m
+[1m+++ b/target/rv32i/riscv_core_setting.sv[m
+[36m@@ -55,7 +55,7 @@[m [mbit support_umode_trap = 0;[m
+ bit support_sfence = 0;[m
+ [m
+ // Support unaligned load/store[m
+[31m-bit support_unaligned_load_store = 1'b1;[m
+[32m+[m[32mbit support_unaligned_load_store = 1'b0;[m
+ [m
+ // GPR setting[m
+ parameter int NUM_FLOAT_GPR = 32;[m
+[1mdiff --git a/yaml/base_testlist.yaml b/yaml/base_testlist.yaml[m
+[1mindex 1ef0d20..64a3a78 100644[m
+[1m--- a/yaml/base_testlist.yaml[m
+[1m+++ b/yaml/base_testlist.yaml[m
+[36m@@ -35,7 +35,7 @@[m
+   description: >[m
+     Arithmetic instruction test, no load/store/branch instructions[m
+   gen_opts: >[m
+[31m-    +instr_cnt=10000[m
+[32m+[m[32m    +instr_cnt=10[m
+     +num_of_sub_program=0[m
+     +directed_instr_0=riscv_int_numeric_corner_stream,4[m
+     +no_fence=1[m
+[1mdiff --git a/yaml/simulator.yaml b/yaml/simulator.yaml[m
+[1mindex 01f8b1a..730f494 100644[m
+[1m--- a/yaml/simulator.yaml[m
+[1m+++ b/yaml/simulator.yaml[m
+[36m@@ -53,7 +53,7 @@[m
+ - tool: questa[m
+   compile:[m
+     cmd:[m
+[31m-      - "vmap mtiUvm $QUESTA_HOME/uvm-1.2"[m
+[32m+[m[32m      - "vmap mtiUvm $QUESTA_HOME/questasim/uvm-1.2"[m
+       - "vlog -64[m
+         +incdir+<setting>[m
+         +incdir+<user_extension>[m

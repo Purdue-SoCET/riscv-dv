@@ -55,7 +55,7 @@ bit support_umode_trap = 0;
 bit support_sfence = 0;
 
 // Support unaligned load/store
-bit support_unaligned_load_store = 1'b1;
+bit support_unaligned_load_store = 1'b0;
 
 // GPR setting
 parameter int NUM_FLOAT_GPR = 32;

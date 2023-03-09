@@ -33,14 +33,16 @@
 `endif
 
 `ifndef DV_CHECK
-`define DV_CHECK(T_, MSG_="", SEV_=error, ID_=`gfn, WITH_C_=) \
+// `define DV_CHECK(T_, MSG_="", SEV_=error, ID_=`gfn, WITH_C_=) \
+`define DV_CHECK(T_, MSG_="", SEV_=error, ID_=`gfn, WITH_C_= && 1) \
     if (!(T_ WITH_C_)) begin \
       `uvm_``SEV_(ID_, $sformatf("Check failed (%s) %s ", `"T_`", MSG_)); \
     end
 `endif
 
 `ifndef DV_CHECK_FATAL
-  `define DV_CHECK_FATAL(T_, MSG_="", ID_=`gfn, WITH_C_=) \
+  // `define DV_CHECK_FATAL(T_, MSG_="", ID_=`gfn, WITH_C_=) \
+  `define DV_CHECK_FATAL(T_, MSG_="", ID_=`gfn, WITH_C_=&& 1) \
     `DV_CHECK(T_, MSG_, fatal, ID_, WITH_C_)
 `endif
 
